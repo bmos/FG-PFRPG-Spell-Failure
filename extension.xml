@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="3.3.11" release="3">
+	<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
+	<properties>
+		<name>Spell Failure</name>
+		<version>1.0.0</version>
+		<author>bmos (Wil Thieme)</author>
+		<description>This extension rolls arcane failure chance when the cast button of the spell on the actions tab is clicked.</description>
+		<ruleset>
+			<name>PFRPG</name>
+		</ruleset>
+		<ruleset>
+			<name>3.5E</name>
+		</ruleset>
+	</properties>
+
+	<announcement text="https://github.com/bmos/PFRPG-Spell-Failure\rPFRPG Spell Failure:\rThis extension rolls arcane failure chance when the cast button of the spell on the actions tab is clicked."  icon="SanityLogo" font="emotefont" />
+
+	<base>
+		<!-- Graphics -->
+		<!-- Campaign Records -->
+		<includefile source="campaign/record_spell_entry.xml" />
+		<includefile source="campaign/template_spell.xml" />
+		<!-- Strings -->
+		<includefile source="strings/strings_options.xml" />
+		<includefile source="strings/strings_spell_failure.xml" />
+		<!-- Scripts -->
+		<script name="SpellFailure" file="scripts/spell_failure.lua" />
+		<script name="SpellFailClasses" file="scripts/spell_failure_options.lua" />
+	</base>
+</root>
