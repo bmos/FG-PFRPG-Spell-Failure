@@ -4,7 +4,7 @@
 
 <root>
 	<!-- options titles -->
-	<string name="opt_lab_spell_fail">Encumbrance: Automate Spell Failure</string>
+	<string name="opt_lab_spell_fail">Spell Failure Automation</string>
 
 	<!-- option states -->
 	<string name="enc_opt_fail_on">Auto Roll</string>
