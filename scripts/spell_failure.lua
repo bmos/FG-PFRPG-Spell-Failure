@@ -157,7 +157,7 @@ function arcaneSpellFailure(nodeSpell)
 	local nodeChar = nodeSpellset.getChild('...')
 	local rActor = ActorManager.getActor('pc', nodeChar)
 
-	if nSpellFailureChance ~= 0 then
+	if rActor.sType == 'pc' and nSpellFailureChance ~= 0 then
 		-- if true, rolls failure chance
 		local bArcaneCaster = isArcaneCaster(nodeChar, nodeSpellset)
 
