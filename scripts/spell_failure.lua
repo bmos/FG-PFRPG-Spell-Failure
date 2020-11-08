@@ -113,22 +113,22 @@ end
 --	The resulting table is then checked for an S character.
 --	@see fromCSV
 --	@param nodeSpell database node of the spell being cast
---	@return bStillSpell boolean value, true if spell has no somatic compenents
+--	@return bSomaticSpell boolean value, true if spell has no somatic compenents
 local function isSomaticSpell(nodeSpell)
 	local sComponents = DB.getValue(nodeSpell,'components')
-	local bStillSpell = true
+	local bSomaticSpell = false
 
 	if sComponents then
 		local tComponents = fromCSV(string.lower(sComponents))
 
 		for _,v in pairs(tComponents) do
 			if v == 's' or v == ' s' then
-				bStillSpell = false
+				bSomaticSpell = true
 			end
 		end
 	end
 	
-	return bStillSpell
+	return bSomaticSpell
 end
 
 ---	This function rolls typed percentile dice identified as a spell failure roll including the failure threshold.
@@ -138,8 +138,9 @@ end
 local function rollDice(nodeChar, rActor, nSpellFailureChance)
 	local rRoll = {}
 	rRoll.sType = 'spellfailure'
-	rRoll.aDice = {'d100','d10'}
-	rRoll.sDesc = 'Spell Failure Chance'
+	rRoll.aDice = {'d100'}
+	if Interface.getVersion() < 4 then rRoll.aDice = {'d100','d10'} end
+	rRoll.sDesc = '[SPELL FAILURE]'
 	rRoll.nTarget = nSpellFailureChance -- set DC to currently active spell failure chance
 
 	ActionsManager.roll(nodeChar, rActor, rRoll)
@@ -147,29 +148,40 @@ end
 
 ---	This function determines if arcane failure chance should be rolled.
 --	It is triggered when a spell's cast button is clicked.
---	Other functions are called to determine whether a roll should be performed.
+--	It gets the effect bonus/penalty to spell failure and checks for override conditions.
+--	Other functions are then called to determine whether a roll should be performed.
 --	@see isArcaneCaster()
---	@see bStillSpell()
+--	@see isSomaticSpell()
 function arcaneSpellFailure(nodeSpell)
 	local nodeSpellset = nodeSpell.getChild('.....')
-	local nSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure')
-
 	local nodeChar = nodeSpellset.getChild('...')
-	local rActor = ActorManager.getActor('pc', nodeChar)
+	local rActor = ActorManager.getActor('', nodeChar)
 
-	if rActor.sType == 'pc' and nSpellFailureChance ~= 0 then
-		-- if true, rolls failure chance
-		local bArcaneCaster = isArcaneCaster(nodeChar, nodeSpellset)
+	if rActor.sType == 'pc' then
+		local nSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
+		local nSpellFailureEffects = EffectManager35E.getEffectsBonus(rActor, 'SF', true) or 0
+		nSpellFailureChance = nSpellFailureChance + nSpellFailureEffects
+		if not nSpellFailureChance then
+			return nil
+		end
 
-		-- if bStillSpell is flase, roll spell failure chance
-		local bStillSpell = isSomaticSpell(nodeSpell)
+		if nSpellFailureChance > 0 then
+			-- if true, rolls failure chance
+			local bArcaneCaster = (isArcaneCaster(nodeChar, nodeSpellset) or EffectManager35E.hasEffectCondition(rActor, 'FSF'))
+			if EffectManager35E.hasEffectCondition(rActor, 'NSF') then
+				bArcaneCaster = false
+			end
+			
+			-- if bSomaticSpell is flase, roll spell failure chance
+			local bSomaticSpell = isSomaticSpell(nodeSpell)
 
-		-- set up and roll percentile dice for arcane failure
-		if bArcaneCaster == true and bStillSpell == false then
-			if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
-				rollDice(nodeChar, rActor, nSpellFailureChance)
-			elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-				ChatManager.SystemMessage('Roll for ' .. nSpellFailureChance .. '% ' .. 'Arcane Spell Failure Chance')
+			-- set up and roll percentile dice for arcane failure
+			if bArcaneCaster == true and bSomaticSpell == true then
+				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
+					rollDice(nodeChar, rActor, nSpellFailureChance)
+				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
+					ChatManager.SystemMessage(string.format(Interface.getString("spellfail_prompt"), nSpellFailureChance))
+				end
 			end
 		end
 	end
@@ -187,7 +199,7 @@ function spellFailureMessage(rSource, rTarget, rRoll)
 		local nTotal = ActionsManager.total(rRoll)
 		local nTargetDC = tonumber(rRoll.nTarget) or 0
 		
-		rMessage.text = rMessage.text .. ' (failure under ' .. nTargetDC .. '%)'
+		rMessage.text = rMessage.text .. string.format(Interface.getString("spellfail_failurethreshold"), nTargetDC)
 		if nTotal >= nTargetDC then
 			rMessage.text = rMessage.text .. ' [SUCCESS]'
 		else
