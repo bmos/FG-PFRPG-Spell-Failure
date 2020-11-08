@@ -108,6 +108,29 @@ local function fromCSV(s)
 	return t
 end
 
+---	This function determines if the spell cast requires verbal compenents.
+--	To do this, it gets the value of the components string and passes it to the fromCSV function.
+--	The resulting table is then checked for a V character.
+--	@see fromCSV
+--	@param nodeSpell database node of the spell being cast
+--	@return bVerbalSpell boolean value, true if spell has no verbal compenents
+local function isVerbalSpell(nodeSpell)
+	local sComponents = DB.getValue(nodeSpell,'components')
+	local bVerbalSpell = false
+
+	if sComponents then
+		local tComponents = fromCSV(string.lower(sComponents))
+
+		for _,v in pairs(tComponents) do
+			if v == 'v' or v == ' v' then
+				bVerbalSpell = true
+			end
+		end
+	end
+	
+	return bVerbalSpell
+end
+
 ---	This function determines if the spell cast requires somatic compenents.
 --	To do this, it gets the value of the components string and passes it to the fromCSV function.
 --	The resulting table is then checked for an S character.
@@ -184,6 +207,15 @@ function arcaneSpellFailure(nodeSpell)
 				end
 			end
 		end
+	end
+
+	-- if actor has silenced condition
+	local bNoVerbal = EffectManager35E.hasEffectCondition(rActor, 'Silenced')
+	-- if bSomaticSpell is true, roll spell failure chance
+	local bVerbalSpell = isVerbalSpell(nodeSpell)
+	local sName = DB.getValue(nodeActor, 'name', Interface.getString('spellfail_char_noname'))
+	if bNoVerbal and bVerbalSpell then
+		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_verbalwhensilenced"), sName))
 	end
 end
 
