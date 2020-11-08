@@ -154,8 +154,8 @@ end
 --	@see isSomaticSpell()
 function arcaneSpellFailure(nodeSpell)
 	local nodeSpellset = nodeSpell.getChild('.....')
-	local nodeChar = nodeSpellset.getChild('...')
-	local rActor = ActorManager.getActor('', nodeChar)
+	local nodeActor = nodeSpellset.getChild('...')
+	local rActor = ActorManager.getActor('', nodeActor)
 
 	if rActor.sType == 'pc' then
 		local nSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
@@ -167,18 +167,18 @@ function arcaneSpellFailure(nodeSpell)
 
 		if nSpellFailureChance > 0 then
 			-- if true, rolls failure chance
-			local bArcaneCaster = (isArcaneCaster(nodeChar, nodeSpellset) or EffectManager35E.hasEffectCondition(rActor, 'FSF'))
+			local bArcaneCaster = (isArcaneCaster(nodeActor, nodeSpellset) or EffectManager35E.hasEffectCondition(rActor, 'FSF'))
 			if EffectManager35E.hasEffectCondition(rActor, 'NSF') then
 				bArcaneCaster = false
 			end
 			
-			-- if bSomaticSpell is flase, roll spell failure chance
+			-- if bSomaticSpell is true, roll spell failure chance
 			local bSomaticSpell = isSomaticSpell(nodeSpell)
 
 			-- set up and roll percentile dice for arcane failure
 			if bArcaneCaster == true and bSomaticSpell == true then
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
-					rollDice(nodeChar, rActor, nSpellFailureChance)
+					rollDice(nodeActor, rActor, nSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
 					ChatManager.SystemMessage(string.format(Interface.getString("spellfail_prompt"), nSpellFailureChance))
 				end
