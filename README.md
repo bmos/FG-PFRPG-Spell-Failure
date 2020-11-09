@@ -6,6 +6,7 @@ This extension rolls arcane failure chance when the cast button of the spell on 
 * Alternately, based on option toggle, prompt user to roll via a chat message which includes the spell failure chance.
 * Add effects FSF and NSF to force or negate spell failure.
 * Add effect SF: [n] to allow spell failure chance to be raised/lowered by effects. SF: 10 increases 10% spell failure to 20%. SF: -10 decreases 20% spell failure to 10%.
+* Add condition effect "Silenced" to check for spells with verbal components. If such a spell is cast under this Silenced condition, it will alert in chat that this is not allowed.
 
 # Compatibility and Instructions
 This extension has been tested with [FantasyGrounds Classic](https://www.fantasygrounds.com/home/FantasyGroundsClassic.php) 3.3.12 and [FantasyGrounds Unity](https://www.fantasygrounds.com/home/FantasyGroundsUnity.php) 4.0.0 (2020-11-04).
