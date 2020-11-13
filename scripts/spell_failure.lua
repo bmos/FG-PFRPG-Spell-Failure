@@ -219,15 +219,15 @@ function arcaneSpellFailure(nodeSpell)
 	-- if actor is grappled or pinned condition
 	if EffectManager35E.hasEffectCondition(rActor, 'Grappled') then
 		bConcentrationCheck = true
-		sCondition = 'Grappled'
+		sCondition = 'grappled'
 	end
 	if EffectManager35E.hasEffectCondition(rActor, 'Pinned') then
 		bConcentrationCheck = true
-		sCondition = 'Pinned'
+		sCondition = 'pinned'
 	end
 	if EffectManager35E.hasEffectCondition(rActor, 'Entangled') then
 		bConcentrationCheck = true
-		sCondition = 'Entangled'
+		sCondition = 'entangled'
 	end
 	-- if bSomaticSpell is true, roll spell failure chance
 	local bVerbalSpell = isVerbalSpell(nodeSpell)
@@ -235,9 +235,9 @@ function arcaneSpellFailure(nodeSpell)
 	if bNoVerbal and bVerbalSpell then
 		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_verbalwhensilenced"), sName))
 	end
-	if sCondition == 'Pinned' and bSomaticSpell then
+	if sCondition == 'pinned' and bSomaticSpell then
 		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_somaticwhilepinned"), sName))
-	elseif sCondition == 'Pinned' then
+	elseif sCondition == 'pinned' then
 		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_concentrationcheck"), sName, sCondition))
 	end
 	if bConcentrationCheck then
