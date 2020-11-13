@@ -7,6 +7,8 @@
 <root>
 	<string name="spellfail_prompt">Roll for %d%% spell failure chance.</string>
 	<string name="spellfail_failurethreshold"> [%d%%]</string>
-	<string name="spellfail_verbalwhensilenced"> %s is casting a spell with verbal components when silenced.</string>
+	<string name="spellfail_verbalwhensilenced">%s is casting a spell with verbal components when silenced.</string>
+	<string name="spellfail_concentrationcheck">%s is casting a spell while %s and likely needs to make a concentration check.</string>
+	<string name="spellfail_somaticwhilepinned">%s is casting a spell with somatic components while pinned (not allowed).</string>
 	<string name="spellfail_char_noname">a character</string>
 </root>

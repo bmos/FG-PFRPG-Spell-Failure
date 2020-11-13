@@ -180,6 +180,8 @@ function arcaneSpellFailure(nodeSpell)
 	local nodeActor = nodeSpellset.getChild('...')
 	local rActor = ActorManager.getActor('', nodeActor)
 
+	local bSomaticSpell = isSomaticSpell(nodeSpell)
+
 	if rActor.sType == 'pc' then
 		local nSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
 		local nSpellFailureEffects = EffectManager35E.getEffectsBonus(rActor, 'SF', true) or 0
@@ -194,9 +196,6 @@ function arcaneSpellFailure(nodeSpell)
 			if EffectManager35E.hasEffectCondition(rActor, 'NSF') then
 				bArcaneCaster = false
 			end
-			
-			-- if bSomaticSpell is true, roll spell failure chance
-			local bSomaticSpell = isSomaticSpell(nodeSpell)
 
 			-- set up and roll percentile dice for arcane failure
 			if bArcaneCaster == true and bSomaticSpell == true then
@@ -209,13 +208,40 @@ function arcaneSpellFailure(nodeSpell)
 		end
 	end
 
+	local bNoVerbal = false
 	-- if actor has silenced condition
-	local bNoVerbal = EffectManager35E.hasEffectCondition(rActor, 'Silenced')
+	if EffectManager35E.hasEffectCondition(rActor, 'Silenced') then
+		bNoVerbal = true
+	end
+
+	local bConcentrationCheck = false
+	local sCondition = ''
+	-- if actor is grappled or pinned condition
+	if EffectManager35E.hasEffectCondition(rActor, 'Grappled') then
+		bConcentrationCheck = true
+		sCondition = 'Grappled'
+	end
+	if EffectManager35E.hasEffectCondition(rActor, 'Pinned') then
+		bConcentrationCheck = true
+		sCondition = 'Pinned'
+	end
+	if EffectManager35E.hasEffectCondition(rActor, 'Entangled') then
+		bConcentrationCheck = true
+		sCondition = 'Entangled'
+	end
 	-- if bSomaticSpell is true, roll spell failure chance
 	local bVerbalSpell = isVerbalSpell(nodeSpell)
 	local sName = DB.getValue(nodeActor, 'name', Interface.getString('spellfail_char_noname'))
 	if bNoVerbal and bVerbalSpell then
 		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_verbalwhensilenced"), sName))
+	end
+	if sCondition == 'Pinned' and bSomaticSpell then
+		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_somaticwhilepinned"), sName))
+	elseif sCondition == 'Pinned' then
+		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_concentrationcheck"), sName, sCondition))
+	end
+	if bConcentrationCheck then
+		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_concentrationcheck"), sName, sCondition))
 	end
 end
 
