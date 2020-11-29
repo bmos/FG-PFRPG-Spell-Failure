@@ -157,14 +157,14 @@ end
 ---	This function rolls typed percentile dice identified as a spell failure roll including the failure threshold.
 --	@param nodeChar This is the charsheet databasenode of the player character that is casting the spell
 --	@param rActor This is a table containing database paths and identifying data about the player character
---	@param nSpellFailureChance The numerical chance that the spell being cast will fail
-local function rollDice(nodeChar, rActor, nSpellFailureChance)
+--	@param nSomaticSpellFailureChance The numerical chance that the spell being cast will fail
+local function rollDice(nodeChar, rActor, nSomaticSpellFailureChance)
 	local rRoll = {}
 	rRoll.sType = 'spellfailure'
 	rRoll.aDice = {'d100'}
 	if Interface.getVersion() < 4 then rRoll.aDice = {'d100','d10'} end
 	rRoll.sDesc = '[SPELL FAILURE]'
-	rRoll.nTarget = nSpellFailureChance -- set DC to currently active spell failure chance
+	rRoll.nTarget = nSomaticSpellFailureChance -- set DC to currently active spell failure chance
 
 	ActionsManager.roll(nodeChar, rActor, rRoll)
 end
@@ -181,18 +181,25 @@ function arcaneSpellFailure(nodeSpell)
 	local rActor = ActorManager.getActor('', nodeActor)
 
 	local bSomaticSpell = isSomaticSpell(nodeSpell)
+	local bVerbalSpell = isVerbalSpell(nodeSpell)
 
 	if rActor.sType == 'pc' then
-		local nSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
+		local nSomaticSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
+
 		local nSpellFailureEffects = EffectManager35E.getEffectsBonus(rActor, 'SF', true) or 0
-		nSpellFailureChance = nSpellFailureChance + nSpellFailureEffects
-		if not nSpellFailureChance then
+		nSomaticSpellFailureChance = nSomaticSpellFailureChance + nSpellFailureEffects
+
+		local nVerbalSpellFailureChance = 0
+		if EffectManager35E.hasEffectCondition(rActor, 'Deafened') then nVerbalSpellFailureChance = 20 end
+		nVerbalSpellFailureChance = nVerbalSpellFailureChance + nSpellFailureEffects
+
+		if not nSomaticSpellFailureChance and not nVerbalSpellFailureChance then
 			return nil
 		end
 
-		if nSpellFailureChance > 0 then
-			-- if true, rolls failure chance
-			local bArcaneCaster = (isArcaneCaster(nodeActor, nodeSpellset) or EffectManager35E.hasEffectCondition(rActor, 'FSF'))
+		if nSomaticSpellFailureChance > 0 then
+			-- true if somatic failure is forced on 
+			local bArcaneCaster = isArcaneCaster(nodeActor, nodeSpellset) or EffectManager35E.hasEffectCondition(rActor, 'FSF')
 			if EffectManager35E.hasEffectCondition(rActor, 'NSF') then
 				bArcaneCaster = false
 			end
@@ -200,9 +207,19 @@ function arcaneSpellFailure(nodeSpell)
 			-- set up and roll percentile dice for arcane failure
 			if bArcaneCaster == true and bSomaticSpell == true then
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
-					rollDice(nodeActor, rActor, nSpellFailureChance)
+					rollDice(nodeActor, rActor, nSomaticSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-					ChatManager.SystemMessage(string.format(Interface.getString("spellfail_prompt"), nSpellFailureChance))
+					ChatManager.SystemMessage(string.format(Interface.getString("spellfail_prompt"), nSomaticSpellFailureChance, Interface.getString("spellfail_somatic")))
+				end
+			end
+		end
+		if nVerbalSpellFailureChance > 0 then
+			-- set up and roll percentile dice for arcane failure
+			if bVerbalSpell == true then
+				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
+					rollDice(nodeActor, rActor, nVerbalSpellFailureChance)
+				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
+					ChatManager.SystemMessage(string.format(Interface.getString("spellfail_prompt"), nVerbalSpellFailureChance, Interface.getString("spellfail_verbal")))
 				end
 			end
 		end
@@ -230,7 +247,6 @@ function arcaneSpellFailure(nodeSpell)
 		sCondition = 'entangled'
 	end
 	-- if bSomaticSpell is true, roll spell failure chance
-	local bVerbalSpell = isVerbalSpell(nodeSpell)
 	local sName = DB.getValue(nodeActor, 'name', Interface.getString('spellfail_char_noname'))
 	if bNoVerbal and bVerbalSpell then
 		ChatManager.SystemMessage(string.format(Interface.getString("spellfail_verbalwhensilenced"), sName))
