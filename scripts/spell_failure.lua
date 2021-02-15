@@ -51,10 +51,8 @@ end
 --	@return bArcaneCaster boolean value for whether the spellset used is a match for any in the table
 local function isArcaneCaster(nodeChar, nodeSpellset)
 	local sPlayerSpellset = string.lower(DB.getValue(nodeSpellset, 'label'))
-
 	local nArmorCategory, nShieldEquipped = getArmorCategory(nodeChar)
-
-	bArcaneCaster = false
+	local bArcaneCaster = false
 
 	if nArmorCategory == 3 then -- if PC is wearing heavy armor
 		for _,v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do
