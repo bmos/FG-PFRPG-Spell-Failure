@@ -176,12 +176,12 @@ end
 function arcaneSpellFailure(nodeSpell)
 	local nodeSpellset = nodeSpell.getChild('.....')
 	local nodeActor = nodeSpellset.getChild('...')
-	local rActor = ActorManager.getActor('', nodeActor)
+	local rActor = ActorManager.resolveActor(nodeActor)
 
 	local bSomaticSpell = isSomaticSpell(nodeSpell)
 	local bVerbalSpell = isVerbalSpell(nodeSpell)
 
-	if rActor.sType == 'pc' then
+	if ActorManager.isPC(rActor) then
 		local nSomaticSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
 
 		local nSpellFailureEffects = EffectManager35E.getEffectsBonus(rActor, 'SF', true) or 0
