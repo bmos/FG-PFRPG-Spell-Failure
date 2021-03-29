@@ -5,6 +5,7 @@
 <root>
 	<template name="spell_action_castbutton" merge="join">
 		<button_spellaction name="castbutton">
+			<anchored position="insidetopleft" offset="2,2" />
 			<script>
 				function action(draginfo)
 					SpellFailure.arcaneSpellFailure(window.getDatabaseNode().getChild('...'))
