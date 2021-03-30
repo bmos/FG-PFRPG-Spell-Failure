@@ -4,17 +4,9 @@
 
 local onSpellAction_old
 local function onSpellAction_new(draginfo, nodeAction, sSubRoll)
-	if not nodeAction then
-		return;
-	end
-	local rActor = ActorManager.resolveActor(nodeAction.getChild("........."));
-	if not rActor then
-		return;
-	end
-	
-	local rAction = SpellManager.getSpellAction(rActor, nodeAction, sSubRoll);
 
-	if rAction.type == "cast" then
+	local sType = DB.getValue(nodeAction, "type", "");
+	if sType == "cast" then
 		SpellFailure.arcaneSpellFailure(nodeAction.getChild('...'))
 	end
 	
