@@ -2,8 +2,10 @@
 --	Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
-function onInit()
-	ActionsManager.registerResultHandler("spellfailure", spellFailureMessage)
+local onSpellAction_old
+local function onSpellAction_new(draginfo, nodeAction, sSubRoll)
+	SpellFailure.arcaneSpellFailure(nodeAction.getChild('...'))
+	onSpellAction_old(draginfo, nodeAction, sSubRoll)
 end
 
 local function getArmorCategory(nodeChar)
@@ -280,4 +282,14 @@ function spellFailureMessage(rSource, rTarget, rRoll)
 	end
 	
 	Comm.deliverChatMessage(rMessage)
+end
+
+function onInit()
+	ActionsManager.registerResultHandler("spellfailure", spellFailureMessage)
+	onSpellAction_old = SpellManager.onSpellAction
+	SpellManager.onSpellAction = onSpellAction_new
+end
+
+function onClose()
+	SpellManager.onSpellAction = onSpellAction_old
 end
