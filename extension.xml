@@ -8,8 +8,12 @@
 		<version>1.5</version>
 		<author>bmos (Wil Thieme)</author>
 		<description>This extension rolls arcane failure chance when the cast button of the spell on the actions tab is clicked.</description>
-		<ruleset name="PFRPG" />
-		<ruleset name="3.5E" />
+		<ruleset>
+			<name>3.5E</name>
+		</ruleset>
+		<ruleset>
+			<name>PFRPG</name>
+		</ruleset>
 	</properties>
 
 	<announcement text="https://github.com/bmos/PFRPG-Spell-Failure\rPFRPG Spell Failure v1.5:\rThis extension rolls arcane failure chance when the cast button of the spell on the actions tab is clicked." font="emotefont" />
