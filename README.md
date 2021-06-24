@@ -9,7 +9,7 @@ This extension rolls arcane failure chance when the cast button of the spell on 
 * Add condition effect "Silenced" to check for spells with verbal components. If such a spell is cast under this Silenced condition, it will alert in chat that this is not allowed.
 
 # Compatibility and Instructions
-This extension has been tested with [FantasyGrounds Unity](https://www.fantasygrounds.com/home/FantasyGroundsUnity.php) 4.0.10 (2021-02-04).
+This extension has been tested with [FantasyGrounds Unity](https://www.fantasygrounds.com/home/FantasyGroundsUnity.php) 4.1.4 (2021-06-08).
 
 In-game controls for enabling/disabling/configuring some extension components are in FantasyGrounds' "Options" menu.
 To change which classes have an arcane failure chance in different types of armor/shields, change the table in [scripts/spell_failure_options.lua](https://github.com/bmos/FG-PFRPG-Spell-Failure/blob/master/scripts/spell_failure_options.lua).
