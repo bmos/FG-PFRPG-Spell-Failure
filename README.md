@@ -1,5 +1,5 @@
 # PFRPG: Spell Failure
-This extension rolls arcane failure chance when the cast button of the spell on the actions tab is clicked and adds effects for modifying failure chance and forcing/bypassing it.
+This extension rolls arcane failure chance when the cast button of a spell on the actions tab is clicked and adds effects for modifying failure chance and forcing/bypassing it.
 
 # Features
 * Roll arcane spell failure chance [when appropriate](https://www.fantasygrounds.com/forums/showthread.php?48977-Advanced-3-5e-and-Pathfinder-effects&p=528377&viewfull=1#post528377).
