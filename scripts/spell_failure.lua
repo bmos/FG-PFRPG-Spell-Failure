@@ -275,6 +275,7 @@ function spellFailureMessage(rSource, rTarget, rRoll)
 	local rMessage = ActionsManager.createActionMessage(rSource, rRoll)
 
 	if rRoll.nTarget then
+		if not rRoll.nMod then rRoll.nMod = 0 end
 		local nTotal = ActionsManager.total(rRoll)
 		local nTargetDC = tonumber(rRoll.nTarget) or 0
 		
