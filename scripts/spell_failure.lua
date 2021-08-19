@@ -3,14 +3,14 @@
 --
 
 local onSpellAction_old
-local function onSpellAction_new(draginfo, nodeAction, sSubRoll)
+local function onSpellAction_new(draginfo, nodeAction, sSubRoll, ...)
 
 	local sType = DB.getValue(nodeAction, "type", "");
 	if sType == "cast" then
 		SpellFailure.arcaneSpellFailure(nodeAction.getChild('...'))
 	end
 	
-	onSpellAction_old(draginfo, nodeAction, sSubRoll)
+	onSpellAction_old(draginfo, nodeAction, sSubRoll, ...)
 end
 
 local function getArmorCategory(nodeChar)
