@@ -1,6 +1,6 @@
 [![Build FG-Usable File](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/create-ext.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/create-ext.yml) [![Luacheck](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/luacheck.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/luacheck.yml)
 
-# PFRPG Spell Failure
+# Spell Failure
 This extension rolls arcane failure chance when the cast button of a spell on the actions tab is clicked and adds effects for modifying failure chance and forcing/bypassing it.
 
 # Features
