@@ -1,4 +1,4 @@
--- 
+--
 --	Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
@@ -9,19 +9,19 @@ local function onSpellAction_new(draginfo, nodeAction, sSubRoll, ...)
 	if sType == "cast" then
 		SpellFailure.arcaneSpellFailure(nodeAction.getChild('...'))
 	end
-	
+
 	onSpellAction_old(draginfo, nodeAction, sSubRoll, ...)
 end
 
 local function getArmorCategory(nodeChar)
 	local nArmorCategory = 0
 	local nShieldEquipped = 0
-	
+
 	for _,v in pairs(DB.getChildren(nodeChar, 'inventorylist')) do
 		local nItemCarried = DB.getValue(v, 'carried', 0)
 		local sItemType = string.lower(DB.getValue(v, 'type', ''))
 		local sItemSubtype = string.lower(DB.getValue(v, 'subtype', ''))
-		
+
 		if nItemCarried == 2 then
 			if string.match(sItemType, 'armor', 1) then
 				if string.match(sItemSubtype, 'heavy', 1) then
@@ -46,7 +46,7 @@ local function getArmorCategory(nodeChar)
 			end
 		end
 	end
-		
+
 	return nArmorCategory, nShieldEquipped
 end
 
@@ -132,7 +132,7 @@ local function isVerbalSpell(nodeSpell)
 			end
 		end
 	end
-	
+
 	return bVerbalSpell
 end
 
@@ -155,7 +155,7 @@ local function isSomaticSpell(nodeSpell)
 			end
 		end
 	end
-	
+
 	return bSomaticSpell
 end
 
@@ -178,8 +178,7 @@ end
 --	It is triggered when a spell's cast button is clicked.
 --	It gets the effect bonus/penalty to spell failure and checks for override conditions.
 --	Other functions are then called to determine whether a roll should be performed.
---	@see isArcaneCaster()
---	@see isSomaticSpell()
+--	luacheck: globals arcaneSpellFailure
 function arcaneSpellFailure(nodeSpell)
 	local nodeSpellset = nodeSpell.getChild('.....')
 	local nodeActor = nodeSpellset.getChild('...')
@@ -203,7 +202,7 @@ function arcaneSpellFailure(nodeSpell)
 		end
 
 		if nSomaticSpellFailureChance > 0 then
-			-- true if somatic failure is forced on 
+			-- true if somatic failure is forced on
 			local bArcaneCaster = isArcaneCaster(nodeActor, nodeSpellset) or EffectManager35E.hasEffectCondition(rActor, 'FSF')
 			if EffectManager35E.hasEffectCondition(rActor, 'NSF') then
 				bArcaneCaster = false
@@ -214,7 +213,9 @@ function arcaneSpellFailure(nodeSpell)
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
 					rollDice(nodeActor, rActor, nSomaticSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-					ChatManager.SystemMessage(string.format(Interface.getString("spellfail_prompt"), nSomaticSpellFailureChance, Interface.getString("spellfail_somatic")))
+					ChatManager.SystemMessage(string.format(
+						Interface.getString("spellfail_prompt"), nSomaticSpellFailureChance, Interface.getString("spellfail_somatic"))
+					)
 				end
 			end
 		end
@@ -224,7 +225,9 @@ function arcaneSpellFailure(nodeSpell)
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
 					rollDice(nodeActor, rActor, nVerbalSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-					ChatManager.SystemMessage(string.format(Interface.getString("spellfail_prompt"), nVerbalSpellFailureChance, Interface.getString("spellfail_verbal")))
+					ChatManager.SystemMessage(string.format(
+						Interface.getString("spellfail_prompt"), nVerbalSpellFailureChance, Interface.getString("spellfail_verbal"))
+					)
 				end
 			end
 		end
@@ -271,14 +274,14 @@ end
 --	After checking for success/failure, it outputs the result to chat.
 --	@param rSource the character casting the spell
 --	@param rRoll a table of details/parameters about the roll being performed
-function spellFailureMessage(rSource, rTarget, rRoll)
+local function spellFailureMessage(rSource, _, rRoll)
 	local rMessage = ActionsManager.createActionMessage(rSource, rRoll)
 
 	if rRoll.nTarget then
 		if not rRoll.nMod then rRoll.nMod = 0 end
 		local nTotal = ActionsManager.total(rRoll)
 		local nTargetDC = tonumber(rRoll.nTarget) or 0
-		
+
 		rMessage.text = rMessage.text .. string.format(Interface.getString("spellfail_failurethreshold"), nTargetDC)
 		if nTotal >= nTargetDC then
 			rMessage.text = rMessage.text .. ' [SUCCESS]'
@@ -286,7 +289,7 @@ function spellFailureMessage(rSource, rTarget, rRoll)
 			rMessage.text = rMessage.text .. ' [FAILURE]'
 		end
 	end
-	
+
 	Comm.deliverChatMessage(rMessage)
 end
 
