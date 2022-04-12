@@ -59,20 +59,14 @@ local function isArcaneCaster(nodeChar, nodeSpellset)
 	local bArcaneCaster = false
 
 	if nArmorCategory == 3 then -- if PC is wearing heavy armor
-		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do
-			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
-		end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
 	elseif nArmorCategory == 2 then -- if PC is wearing medium armor
-		for _, v in pairs(SpellFailClasses.tArcaneClass_MedArmor) do
-			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
-		end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_MedArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
 	elseif nArmorCategory == 1 then -- if PC is wearing light armor
 		for _, v in pairs(SpellFailClasses.tArcaneClass_LtArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
 	end
 	if nShieldEquipped == 2 then -- if PC has a tower shield equipped, same as heavy armor
-		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do
-			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
-		end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
 	elseif nShieldEquipped == 1 then -- if PC has a shield equipped
 		for _, v in pairs(SpellFailClasses.tArcaneClass_Shield) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
 	end
@@ -229,9 +223,7 @@ function arcaneSpellFailure(nodeSpell)
 	end
 	-- if bSomaticSpell is true, roll spell failure chance
 	local sName = DB.getValue(nodeActor, 'name', Interface.getString('spellfail_char_noname'))
-	if bNoVerbal and bVerbalSpell then
-		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_verbalwhensilenced'), sName))
-	end
+	if bNoVerbal and bVerbalSpell then ChatManager.SystemMessage(string.format(Interface.getString('spellfail_verbalwhensilenced'), sName)) end
 	if sCondition == 'pinned' and bSomaticSpell then
 		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_somaticwhilepinned'), sName))
 	elseif sCondition == 'pinned' then

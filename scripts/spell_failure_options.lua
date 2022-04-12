@@ -12,7 +12,8 @@ tArcaneClass_Shield = { 'Sorcerer', 'Wizard', 'Magus', 'Summoner', 'Witch', 'Arc
 
 function onInit()
 	OptionsManager.registerOption2(
-					'AUTO_SPELL_FAILURE', false, 'option_header_game', 'opt_lab_spell_fail', 'option_entry_cycler', {
+					'AUTO_SPELL_FAILURE', false, 'option_header_game', 'opt_lab_spell_fail', 'option_entry_cycler',
+					{
 						labels = 'enc_opt_fail_prompt|enc_opt_fail_off',
 						values = 'prompt|off',
 						baselabel = 'enc_opt_fail_on',
