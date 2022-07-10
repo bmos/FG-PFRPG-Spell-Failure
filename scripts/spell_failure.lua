@@ -136,7 +136,6 @@ local function rollDice(nodeChar, rActor, nSomaticSpellFailureChance)
 	local rRoll = {}
 	rRoll.sType = 'spellfailure'
 	rRoll.aDice = { 'd100' }
-	if Interface.getVersion() < 4 then rRoll.aDice = { 'd100', 'd10' } end
 	rRoll.sDesc = '[SPELL FAILURE]'
 	rRoll.nTarget = nSomaticSpellFailureChance -- set DC to currently active spell failure chance
 
