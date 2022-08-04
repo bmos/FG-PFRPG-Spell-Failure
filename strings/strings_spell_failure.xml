@@ -10,7 +10,7 @@
 	<string name="spellfail_verbal">verbal</string>
 	<string name="spellfail_failurethreshold"> [%d%%]</string>
 	<string name="spellfail_verbalwhilesilenced">%s is casting a spell with verbal components when silenced (not allowed).</string>
-	<string name="spellfail_verbalwhiledeafened">%s is casting a spell with verbal components when deafened (20% failure chance).</string>
+	<string name="spellfail_verbalwhiledeafened">%s is casting a spell with verbal components when deafened (20%% failure chance).</string>
 	<string name="spellfail_concentrationcheck">%s is casting a spell while %s and likely needs to make a concentration check (%s).</string>
 	<string name="spellfail_concentrationgrapplepin">DC 10 + the grappler’s CMB + the level of the spell they're casting</string>
 	<string name="spellfail_concentrationentangle">15 + spell level</string>
