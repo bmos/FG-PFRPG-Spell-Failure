@@ -156,6 +156,8 @@ function arcaneSpellFailure(nodeSpell)
 	local bVerbalSpell = isVerbalSpell(nodeSpell)
 
 	if ActorManager.isPC(rActor) then
+		local messagedata = { text = '', font = "emotefont" }
+
 		local nSomaticSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
 
 		local nSpellFailureEffects = EffectManager35E.getEffectsBonus(rActor, 'SF', true) or 0
@@ -164,7 +166,8 @@ function arcaneSpellFailure(nodeSpell)
 		local nVerbalSpellFailureChance = 0
 		if EffectManager35E.hasEffectCondition(rActor, 'Deafened') then
 			nVerbalSpellFailureChance = 20
-			ChatManager.SystemMessage(string.format(Interface.getString('spellfail_verbalwhiledeafened'), rActor.sName))
+			messagedata.text = string.format(Interface.getString('spellfail_verbalwhiledeafened'), rActor.sName)
+			Comm.deliverChatMessage(messagedata)
 		end
 		nVerbalSpellFailureChance = nVerbalSpellFailureChance + nSpellFailureEffects
 
@@ -180,11 +183,8 @@ function arcaneSpellFailure(nodeSpell)
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
 					rollDice(nodeActor, rActor, nSomaticSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-					ChatManager.SystemMessage(
-									string.format(
-													Interface.getString('spellfail_prompt'), nSomaticSpellFailureChance, Interface.getString('spellfail_somatic')
-									)
-					)
+					messagedata.text = string.format(Interface.getString('spellfail_prompt'), nSomaticSpellFailureChance, Interface.getString('spellfail_somatic'))
+					Comm.deliverChatMessage(messagedata)
 				end
 			end
 		end
@@ -194,11 +194,8 @@ function arcaneSpellFailure(nodeSpell)
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
 					rollDice(nodeActor, rActor, nVerbalSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-					ChatManager.SystemMessage(
-									string.format(
-													Interface.getString('spellfail_prompt'), nVerbalSpellFailureChance, Interface.getString('spellfail_verbal')
-									)
-					)
+					messagedata.text = string.format(Interface.getString('spellfail_prompt'), nVerbalSpellFailureChance, Interface.getString('spellfail_verbal'))
+					Comm.deliverChatMessage(messagedata)
 				end
 			end
 		end
