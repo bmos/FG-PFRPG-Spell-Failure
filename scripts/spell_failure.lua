@@ -209,30 +209,31 @@ function arcaneSpellFailure(nodeSpell)
 	if EffectManager35E.hasEffectCondition(rActor, 'Silenced') then bNoVerbal = true end
 
 	local bConcentrationCheck = false
-	local sCondition = ''
+	local sCondition, sParenthetical
 	-- if actor is grappled or pinned condition
 	if EffectManager35E.hasEffectCondition(rActor, 'Grappled') then
 		bConcentrationCheck = true
 		sCondition = 'grappled'
+		sParenthetical = Interface.getString('spellfail_somaticwhilepinned')
 	end
 	if EffectManager35E.hasEffectCondition(rActor, 'Pinned') then
 		bConcentrationCheck = true
 		sCondition = 'pinned'
+		sParenthetical = Interface.getString('spellfail_somaticwhilepinned')
 	end
 	if EffectManager35E.hasEffectCondition(rActor, 'Entangled') then
 		bConcentrationCheck = true
 		sCondition = 'entangled'
+		sParenthetical = Interface.getString('spellfail_somaticwhileentangled')
 	end
 	-- if bSomaticSpell is true, roll spell failure chance
-	local sName = DB.getValue(nodeActor, 'name', Interface.getString('spellfail_char_noname'))
-	if bNoVerbal and bVerbalSpell then ChatManager.SystemMessage(string.format(Interface.getString('spellfail_verbalwhensilenced'), sName)) end
-	if sCondition == 'pinned' and bSomaticSpell then
-		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_somaticwhilepinned'), sName))
-	elseif sCondition == 'pinned' then
-		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_concentrationcheck'), sName, sCondition))
+	if bNoVerbal and bVerbalSpell then
+		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_verbalwhilesilenced'), rActor.sName))
 	end
-	if bConcentrationCheck then
-		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_concentrationcheck'), sName, sCondition))
+	if sCondition == 'pinned' and bSomaticSpell then
+		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_somaticwhilepinned'), rActor.sName))
+	elseif bConcentrationCheck then
+		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_concentrationcheck'), rActor.sName, sCondition, sParenthetical))
 	end
 end
 
