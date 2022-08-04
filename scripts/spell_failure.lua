@@ -162,7 +162,10 @@ function arcaneSpellFailure(nodeSpell)
 		nSomaticSpellFailureChance = nSomaticSpellFailureChance + nSpellFailureEffects
 
 		local nVerbalSpellFailureChance = 0
-		if EffectManager35E.hasEffectCondition(rActor, 'Deafened') then nVerbalSpellFailureChance = 20 end
+		if EffectManager35E.hasEffectCondition(rActor, 'Deafened') then
+			nVerbalSpellFailureChance = 20
+			ChatManager.SystemMessage(string.format(Interface.getString('spellfail_verbalwhiledeafened'), rActor.sName))
+		end
 		nVerbalSpellFailureChance = nVerbalSpellFailureChance + nSpellFailureEffects
 
 		if not nSomaticSpellFailureChance and not nVerbalSpellFailureChance then return nil end
