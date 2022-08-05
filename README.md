@@ -13,7 +13,7 @@ This extension allows rolling arcane failure chance when the cast button of a sp
 * Request concentration checks in chat when casting somatic spells when grappled or entangled. Warn about impossibility when casting somatic when pinned.
 
 # Compatibility and Instructions
-This extension has been tested with [FantasyGrounds Unity](https://www.fantasygrounds.com/home/FantasyGroundsUnity.php) 4.1.13 (2022-01-05).
+This extension has been tested with [FantasyGrounds Unity](https://www.fantasygrounds.com/home/FantasyGroundsUnity.php) 4.2.2 (2022-06-07).
 
 In-game controls for enabling/disabling/configuring some extension components are in FantasyGrounds' "Options" menu.
 To change which classes have an arcane failure chance in different types of armor/shields, change the table in [scripts/spell_failure_options.lua](https://github.com/bmos/FG-PFRPG-Spell-Failure/blob/master/scripts/spell_failure_options.lua).
