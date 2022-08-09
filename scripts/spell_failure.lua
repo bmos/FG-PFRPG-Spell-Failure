@@ -154,9 +154,9 @@ function arcaneSpellFailure(nodeSpell)
 
 	local bSomaticSpell = isSomaticSpell(nodeSpell)
 	local bVerbalSpell = isVerbalSpell(nodeSpell)
+	local messagedata = { text = '', sender = rActor.sName, font = "emotefont" }
 
 	if ActorManager.isPC(rActor) then
-		local messagedata = { text = '', font = "emotefont" }
 
 		local nSomaticSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
 
@@ -225,12 +225,15 @@ function arcaneSpellFailure(nodeSpell)
 	end
 	-- if bSomaticSpell is true, roll spell failure chance
 	if bNoVerbal and bVerbalSpell then
-		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_verbalwhilesilenced'), rActor.sName))
+		messagedata.text = string.format(Interface.getString('spellfail_verbalwhilesilenced'), rActor.sName)
+		Comm.deliverChatMessage(messagedata)
 	end
 	if sCondition == 'pinned' and bSomaticSpell then
-		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_somaticwhilepinned'), rActor.sName))
+		messagedata.text = string.format(Interface.getString('spellfail_somaticwhilepinned'), rActor.sName)
+		Comm.deliverChatMessage(messagedata)
 	elseif bConcentrationCheck then
-		ChatManager.SystemMessage(string.format(Interface.getString('spellfail_concentrationcheck'), rActor.sName, sCondition, sParenthetical))
+		messagedata.text = string.format(Interface.getString('spellfail_concentrationcheck'), rActor.sName, sCondition, sParenthetical)
+		Comm.deliverChatMessage(messagedata)
 	end
 end
 
