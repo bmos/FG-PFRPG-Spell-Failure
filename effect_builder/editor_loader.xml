@@ -8,6 +8,9 @@
 <root version="3.0">
     <!-- Strings -->
     <includefile source="effect_builder/strings/strings_effect_editor.xml" />
-    <!-- Effect Editors -->
+     <!-- Templates -->
+    <includefile source="effect_builder/common/cyclers.xml" />
+   <!-- Effect Editors -->
     <includefile source="effect_builder/effects/SF.xml" />
+    <includefile source="effect_builder/effects/FSF.xml" />
 </root>

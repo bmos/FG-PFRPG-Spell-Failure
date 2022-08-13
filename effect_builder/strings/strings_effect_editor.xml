@@ -7,4 +7,5 @@
 
 <root version="3.0">
     <string name="effect_spellfailure">Spell Failure Chance</string>
+    <string name="effect_forcespellfailure">Force Spell Failure On / Off</string>
 </root>

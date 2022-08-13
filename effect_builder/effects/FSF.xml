@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root version="3.0">
+    <windowclass name="effect_FSF">
+		<script file="effect_builder/effects/scripts/FSF.lua" />
+		<margins control="0,0,0,2" />
+		<sheetdata>
+			<leftanchor_eb />
+
+			<cycler_eb_aura_faction />
+		</sheetdata>
+	</windowclass>
+    <script name="loader_FSF">
+        function onInit()
+            if EditorManager and EditorManager.addEditor then
+                EditorManager.addEditor(
+                    "category_spell",
+                    {
+                        value="FSF",
+                        labelres="effect_forcespellfailure",
+                        windowclass="effect_FSF"
+                    }
+                )
+            end
+        end
+    </script>
+</root>

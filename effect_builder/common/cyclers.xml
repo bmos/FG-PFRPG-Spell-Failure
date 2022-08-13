@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root version="3.0">
+    <template name="cycler_eb_aura_faction">
+        <cycler_eb_valueholder name="enable_disable">
+            <parameters mergerule="replace">
+                <defaultlabel>on</defaultlabel>
+                <defaultvalue>enabled</defaultvalue>
+                <labels>off</labels>
+                <values>disabled</values>
+            </parameters>
+        </cycler_eb_valueholder>
+    </template>
+</root>
