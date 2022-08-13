@@ -25,5 +25,7 @@
 		<!-- Scripts -->
 		<script name="SpellFailure" file="scripts/spell_failure.lua" />
 		<script name="SpellFailClasses" file="scripts/spell_failure_options.lua" />
+		<!-- Effect Builder -->
+		<includefile source="effect_builder/editor_loader.xml" />
 	</base>
 </root>
