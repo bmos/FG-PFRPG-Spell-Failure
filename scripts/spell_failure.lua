@@ -5,7 +5,7 @@ local onSpellAction_old
 local function onSpellAction_new(draginfo, nodeAction, sSubRoll, ...)
 
 	local sType = DB.getValue(nodeAction, 'type', '');
-	if sType == 'cast' then SpellFailure.arcaneSpellFailure(nodeAction.getChild('...')) end
+	if sType == 'cast' then SpellFailure.arcaneSpellFailure(DB.getChild(nodeAction, '...')) end
 
 	onSpellAction_old(draginfo, nodeAction, sSubRoll, ...)
 end
@@ -148,8 +148,8 @@ end
 --	Other functions are then called to determine whether a roll should be performed.
 --	luacheck: globals arcaneSpellFailure
 function arcaneSpellFailure(nodeSpell)
-	local nodeSpellset = nodeSpell.getChild('.....')
-	local nodeActor = nodeSpellset.getChild('...')
+	local nodeSpellset = DB.getChild(nodeSpell, '.....')
+	local nodeActor = DB.getChild(nodeSpellset, '...')
 	local rActor = ActorManager.resolveActor(nodeActor)
 
 	local bSomaticSpell = isSomaticSpell(nodeSpell)
@@ -158,7 +158,7 @@ function arcaneSpellFailure(nodeSpell)
 
 	if ActorManager.isPC(rActor) then
 
-		local nSomaticSpellFailureChance = DB.getValue(nodeSpellset.getChild('...'), 'encumbrance.spellfailure') or 0
+		local nSomaticSpellFailureChance = DB.getValue(DB.getChild(nodeSpellset, '...'), 'encumbrance.spellfailure') or 0
 
 		local nSpellFailureEffects = EffectManager35E.getEffectsBonus(rActor, 'SF', true) or 0
 		nSomaticSpellFailureChance = nSomaticSpellFailureChance + nSpellFailureEffects
