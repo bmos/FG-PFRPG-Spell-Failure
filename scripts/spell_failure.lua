@@ -14,7 +14,7 @@ local function getArmorCategory(nodeChar)
 	local nArmorCategory = 0
 	local nShieldEquipped = 0
 
-	for _, v in pairs(DB.getChildren(nodeChar, 'inventorylist')) do
+	for _, v in ipairs(DB.getChildList(nodeChar, 'inventorylist')) do
 		local nItemCarried = DB.getValue(v, 'carried', 0)
 		local sItemType = string.lower(DB.getValue(v, 'type', ''))
 		local sItemSubtype = string.lower(DB.getValue(v, 'subtype', ''))
