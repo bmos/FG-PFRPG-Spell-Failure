@@ -157,8 +157,7 @@ function arcaneSpellFailure(nodeSpell)
 	local messagedata = { text = '', sender = rActor.sName, font = "emotefont" }
 
 	if ActorManager.isPC(rActor) then
-
-		local nSomaticSpellFailureChance = DB.getValue(DB.getChild(nodeSpellset, '...'), 'encumbrance.spellfailure') or 0
+		local nSomaticSpellFailureChance = DB.getValue(nodeSpellset, '...encumbrance.spellfailure', 0)
 
 		local nSpellFailureEffects = EffectManager35E.getEffectsBonus(rActor, 'SF', true) or 0
 		nSomaticSpellFailureChance = nSomaticSpellFailureChance + nSpellFailureEffects
