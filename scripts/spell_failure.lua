@@ -3,8 +3,7 @@
 --
 local onSpellAction_old
 local function onSpellAction_new(draginfo, nodeAction, sSubRoll, ...)
-
-	local sType = DB.getValue(nodeAction, 'type', '');
+	local sType = DB.getValue(nodeAction, 'type', '')
 	if sType == 'cast' then SpellFailure.arcaneSpellFailure(DB.getChild(nodeAction, '...')) end
 
 	onSpellAction_old(draginfo, nodeAction, sSubRoll, ...)
@@ -59,16 +58,26 @@ local function isArcaneCaster(nodeChar, nodeSpellset)
 	local bArcaneCaster = false
 
 	if nArmorCategory == 3 then -- if PC is wearing heavy armor
-		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do
+			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
+		end
 	elseif nArmorCategory == 2 then -- if PC is wearing medium armor
-		for _, v in pairs(SpellFailClasses.tArcaneClass_MedArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_MedArmor) do
+			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
+		end
 	elseif nArmorCategory == 1 then -- if PC is wearing light armor
-		for _, v in pairs(SpellFailClasses.tArcaneClass_LtArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_LtArmor) do
+			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
+		end
 	end
 	if nShieldEquipped == 2 then -- if PC has a tower shield equipped, same as heavy armor
-		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_HeavyArmor) do
+			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
+		end
 	elseif nShieldEquipped == 1 then -- if PC has a shield equipped
-		for _, v in pairs(SpellFailClasses.tArcaneClass_Shield) do if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end end
+		for _, v in pairs(SpellFailClasses.tArcaneClass_Shield) do
+			if string.lower(v) == sPlayerSpellset then bArcaneCaster = true end
+		end
 	end
 
 	return bArcaneCaster
@@ -103,7 +112,9 @@ local function isVerbalSpell(nodeSpell)
 	if sComponents then
 		local tComponents = fromCSV(string.lower(sComponents))
 
-		for _, v in pairs(tComponents) do if v == 'v' or v == ' v' then bVerbalSpell = true end end
+		for _, v in pairs(tComponents) do
+			if v == 'v' or v == ' v' then bVerbalSpell = true end
+		end
 	end
 
 	return bVerbalSpell
@@ -122,7 +133,9 @@ local function isSomaticSpell(nodeSpell)
 	if sComponents then
 		local tComponents = fromCSV(string.lower(sComponents))
 
-		for _, v in pairs(tComponents) do if v == 's' or v == ' s' then bSomaticSpell = true end end
+		for _, v in pairs(tComponents) do
+			if v == 's' or v == ' s' then bSomaticSpell = true end
+		end
 	end
 
 	return bSomaticSpell
@@ -154,7 +167,7 @@ function arcaneSpellFailure(nodeSpell)
 
 	local bSomaticSpell = isSomaticSpell(nodeSpell)
 	local bVerbalSpell = isVerbalSpell(nodeSpell)
-	local messagedata = { text = '', sender = rActor.sName, font = "emotefont" }
+	local messagedata = { text = '', sender = rActor.sName, font = 'emotefont' }
 
 	if ActorManager.isPC(rActor) then
 		local nSomaticSpellFailureChance = DB.getValue(nodeSpellset, '...encumbrance.spellfailure', 0)
@@ -182,7 +195,8 @@ function arcaneSpellFailure(nodeSpell)
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
 					rollDice(nodeActor, rActor, nSomaticSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-					messagedata.text = string.format(Interface.getString('spellfail_prompt'), nSomaticSpellFailureChance, Interface.getString('spellfail_somatic'))
+					messagedata.text =
+						string.format(Interface.getString('spellfail_prompt'), nSomaticSpellFailureChance, Interface.getString('spellfail_somatic'))
 					Comm.deliverChatMessage(messagedata)
 				end
 			end
@@ -193,7 +207,8 @@ function arcaneSpellFailure(nodeSpell)
 				if OptionsManager.isOption('AUTO_SPELL_FAILURE', 'auto') then
 					rollDice(nodeActor, rActor, nVerbalSpellFailureChance)
 				elseif OptionsManager.isOption('AUTO_SPELL_FAILURE', 'prompt') then
-					messagedata.text = string.format(Interface.getString('spellfail_prompt'), nVerbalSpellFailureChance, Interface.getString('spellfail_verbal'))
+					messagedata.text =
+						string.format(Interface.getString('spellfail_prompt'), nVerbalSpellFailureChance, Interface.getString('spellfail_verbal'))
 					Comm.deliverChatMessage(messagedata)
 				end
 			end
