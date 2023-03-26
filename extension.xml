@@ -16,7 +16,7 @@
 		</ruleset>
 	</properties>
 
-	<announcement text="https://github.com/bmos/PFRPG-Spell-Failure\rPFRPG Spell Failure v1.8:\rThis extension rolls arcane failure chance when the cast button of the spell on the actions tab is clicked." font="emotefont" />
+	<announcement text="https://github.com/bmos/PFRPG-Spell-Failure\rPFRPG Spell Failure v1.8:\rThis extension rolls arcane failure chance when the cast button of the spell on the actions tab is clicked." font="emotefont" icon="module_loaded" />
 
 	<base>
 		<!-- Strings -->
