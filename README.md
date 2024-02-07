@@ -1,4 +1,4 @@
-[![Build FG-Usable File](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/create-ext.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/create-ext.yml) [![Luacheck](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/luacheck.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/luacheck.yml)
+[![Build FG-Usable File](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/release.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/release.yml) [![Luacheck](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/luacheck.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Failure/actions/workflows/luacheck.yml)
 
 # Spell Failure
 This extension allows rolling arcane failure chance when the cast button of a spell on the actions tab is clicked and handles reminders when casting verbal or somatic spells under certain circumstances.
